@@ -675,6 +675,24 @@ class VehicleClient:
         """
         return self.client.call('waitOnLastTask', timeout_sec)
 
+    # Add new vehicle via RPC
+    def simAddVehicle(self, vehicle_name, vehicle_type, pawn_path, north, east, down):
+        """
+        Create vehicle at runtime
+
+        Args:
+            vehicle_name (str): Name of the vehicle being created
+            vehicle_type (str): Type of vehicle, e.g. "simpleflight"
+            pawn_path (str): Vehicle blueprint path
+            north (float): Metres in North direction to spawn at vehicle at
+            east (float): Meters in East direction to spawn vehicle at
+            down (float): Metres below to spawn the vehicle at
+
+        Returns:
+            bool: Whether vehicle was created
+        """
+        return self.client.call('simAddVehicle', vehicle_name, vehicle_type, pawn_path, north, east, down)
+
 # -----------------------------------  Multirotor APIs ---------------------------------------------
 class MultirotorClient(VehicleClient, object):
     def __init__(self, ip = "", port = 41451, timeout_value = 3600):
@@ -814,17 +832,14 @@ class MultirotorClient(VehicleClient, object):
 
         - Frame Convention:
             - X axis is along the **Front** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **roll** angle.
             | Hence, rolling with a positive angle is equivalent to translating in the **right** direction, w.r.t. our FLU body frame.
 
             - Y axis is along the **Left** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **pitch** angle.
             | Hence, pitching with a positive angle is equivalent to translating in the **front** direction, w.r.t. our FLU body frame.
 
             - Z axis is along the **Up** direction.
-
             | Clockwise rotation about this axis defines a positive **yaw** angle.
             | Hence, yawing with a positive angle is equivalent to rotated towards the **left** direction wrt our FLU body frame. Or in an anticlockwise fashion in the body XY / FL plane.
 
@@ -849,17 +864,14 @@ class MultirotorClient(VehicleClient, object):
 
         - Frame Convention:
             - X axis is along the **Front** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **roll** angle.
             | Hence, rolling with a positive angle is equivalent to translating in the **right** direction, w.r.t. our FLU body frame.
 
             - Y axis is along the **Left** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **pitch** angle.
             | Hence, pitching with a positive angle is equivalent to translating in the **front** direction, w.r.t. our FLU body frame.
 
             - Z axis is along the **Up** direction.
-
             | Clockwise rotation about this axis defines a positive **yaw** angle.
             | Hence, yawing with a positive angle is equivalent to rotated towards the **left** direction wrt our FLU body frame. Or in an anticlockwise fashion in the body XY / FL plane.
 
@@ -884,17 +896,14 @@ class MultirotorClient(VehicleClient, object):
 
         - Frame Convention:
             - X axis is along the **Front** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **roll** angle.
             | Hence, rolling with a positive angle is equivalent to translating in the **right** direction, w.r.t. our FLU body frame.
 
             - Y axis is along the **Left** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **pitch** angle.
             | Hence, pitching with a positive angle is equivalent to translating in the **front** direction, w.r.t. our FLU body frame.
 
             - Z axis is along the **Up** direction.
-
             | Clockwise rotation about this axis defines a positive **yaw** angle.
             | Hence, yawing with a positive angle is equivalent to rotated towards the **left** direction wrt our FLU body frame. Or in an anticlockwise fashion in the body XY / FL plane.
 
@@ -919,17 +928,14 @@ class MultirotorClient(VehicleClient, object):
 
         - Frame Convention:
             - X axis is along the **Front** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **roll** angle.
             | Hence, rolling with a positive angle is equivalent to translating in the **right** direction, w.r.t. our FLU body frame.
 
             - Y axis is along the **Left** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **pitch** angle.
             | Hence, pitching with a positive angle is equivalent to translating in the **front** direction, w.r.t. our FLU body frame.
 
             - Z axis is along the **Up** direction.
-
             | Clockwise rotation about this axis defines a positive **yaw** angle.
             | Hence, yawing with a positive angle is equivalent to rotated towards the **left** direction wrt our FLU body frame. Or in an anticlockwise fashion in the body XY / FL plane.
 
@@ -954,17 +960,14 @@ class MultirotorClient(VehicleClient, object):
 
         - Frame Convention:
             - X axis is along the **Front** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **roll** angle.
             | Hence, rolling with a positive angle is equivalent to translating in the **right** direction, w.r.t. our FLU body frame.
 
             - Y axis is along the **Left** direction of the quadrotor.
-
             | Clockwise rotation about this axis defines a positive **pitch** angle.
             | Hence, pitching with a positive angle is equivalent to translating in the **front** direction, w.r.t. our FLU body frame.
 
             - Z axis is along the **Up** direction.
-
             | Clockwise rotation about this axis defines a positive **yaw** angle.
             | Hence, yawing with a positive angle is equivalent to rotated towards the **left** direction wrt our FLU body frame. Or in an anticlockwise fashion in the body XY / FL plane.
 
