@@ -1,7 +1,7 @@
 #! /bin/bash
 
 set -x
-set -e
+# set -e
 
 # check for rpclib
 if [ ! -f ../external/rpclib/rpclib-2.2.1/rpclib.pc.in ]; then
@@ -16,8 +16,13 @@ fi
 
 
 cd linux-build
-export CC="clang-5.0"
-export CXX="clang++-5.0"
+if [ "$(uname)" == "Darwin" ]; then
+    export CC=/usr/local/opt/llvm@8/bin/clang
+    export CXX=/usr/local/opt/llvm@8/bin/clang++
+else
+    export CC="clang-8"
+    export CXX="clang++-8"
+fi
 
 # check for local cmake build created by setup.sh
 if [ -d "../../cmake_build" ]; then
