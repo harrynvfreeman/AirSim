@@ -98,7 +98,7 @@ if [ ! -d "external/rpclib/rpclib-2.2.1" ]; then
     rm -rf "external/rpclib"
 
     mkdir -p "external/rpclib"
-    unzip v2.2.1.zip -d external/rpclib
+    unzip -q v2.2.1.zip -d external/rpclib
     rm v2.2.1.zip
 fi
 
@@ -122,7 +122,7 @@ if $downloadHighPolySuv; then
             if [ -d "../Unreal/Plugins/AirSim/Content/VehicleAdv/SUV" ]; then
                 rm -rf "../Unreal/Plugins/AirSim/Content/VehicleAdv/SUV"
             fi
-            unzip car_assets.zip -d ../Unreal/Plugins/AirSim/Content/VehicleAdv
+            unzip -q car_assets.zip -d ../Unreal/Plugins/AirSim/Content/VehicleAdv
             cd ..
             rm -rf "suv_download_tmp"
     fi
@@ -135,7 +135,7 @@ echo "Installing Eigen library..."
 if [ ! -d "AirLib/deps/eigen3" ]; then
     echo "Downloading Eigen..."
     wget -O eigen3.zip https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip
-    unzip eigen3.zip -d temp_eigen
+    unzip -q eigen3.zip -d temp_eigen
     mkdir -p AirLib/deps/eigen3
     mv temp_eigen/eigen*/Eigen AirLib/deps/eigen3
     rm -rf temp_eigen
