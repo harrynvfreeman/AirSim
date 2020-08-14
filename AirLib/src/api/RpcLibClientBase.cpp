@@ -432,6 +432,11 @@ bool RpcLibClientBase::isRecording()
     return pimpl_->client.call("isRecording").as<bool>();
 }
 
+vector<string> RpcLibClientBase::listVehicles()
+{
+    return pimpl_->client.call("listVehicles").as<vector<string>>();
+}
+
 void* RpcLibClientBase::getClient()
 {
     return &pimpl_->client;

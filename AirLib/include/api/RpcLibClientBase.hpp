@@ -114,6 +114,8 @@ public:
     void stopRecording();
     bool isRecording();
 
+    vector<string> listVehicles();
+
 protected:
     void* getClient();
     const void* getClient() const;

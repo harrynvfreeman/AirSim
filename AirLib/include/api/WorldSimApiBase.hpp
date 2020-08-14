@@ -70,6 +70,8 @@ public:
     virtual void startRecording() = 0;
     virtual void stopRecording() = 0;
     virtual bool isRecording() const = 0;
+
+    virtual vector<string> listVehicles() const = 0;
 };
 
 
