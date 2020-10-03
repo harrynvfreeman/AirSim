@@ -34,4 +34,8 @@ fi
 sudo apt-get install gcc-8 g++-8
 sudo apt-get install ros-$ROS_DISTRO-mavros*
 sudo apt-get install ros-$ROS_DISTRO-tf2-sensor-msgs
-sudo pip3 install catkin-tools
+if [[ "$DISTRO" == "focal" ]]; then
+    sudo pip3 install "git+https://github.com/catkin/catkin_tools.git#egg=catkin_tools"
+else
+    sudo pip3 install catkin-tools
+fi
