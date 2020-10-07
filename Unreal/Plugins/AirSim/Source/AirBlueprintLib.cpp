@@ -19,6 +19,8 @@
 #include "IImageWrapper.h"
 #include "Misc/ObjectThumbnail.h"
 #include "Engine/Engine.h"
+#include "Rendering/SkeletalMeshRenderData.h"
+#include "Rendering/SkeletalMeshLODRenderData.h"
 #include <exception>
 #include "common/common_utils/Utils.hpp"
 #include "Modules/ModuleManager.h"
@@ -351,6 +353,75 @@ std::vector<std::string> UAirBlueprintLib::ListMatchingActors(const UObject *con
             results.push_back(name);
     }
     return results;
+}
+
+std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::GetSkeletalMeshComponents()
+{
+    std::vector<msr::airlib::MeshPositionVertexBuffersResponse> meshes;
+    int num_meshes = 0;
+
+    for (TObjectIterator<USkeletalMeshComponent> comp; comp; ++comp)
+    {
+        *comp;
+
+        //TODO Use GetMeshName (see GetStaticMeshComponents)
+        std::string name;
+        if (comp->GetOwner()) {
+            name = std::string(TCHAR_TO_UTF8(*(comp->GetOwner()->GetName())));
+        } else {
+            name = "";
+        }
+
+        msr::airlib::MeshPositionVertexBuffersResponse mesh;
+        mesh.name = name;
+
+        FVector pos = comp->GetComponentLocation();
+        FQuat att = comp->GetComponentQuat();
+        mesh.position[0] = pos.X;
+        mesh.position[1] = pos.Y;
+        mesh.position[2] = pos.Z;
+        mesh.orientation.w() = att.W;
+        mesh.orientation.x() = att.X;
+        mesh.orientation.y() = att.Y;
+        mesh.orientation.z() = att.Z;
+
+        int lodIndex = 0;
+
+        TArray<FVector> outPositions;
+        TArray<FMatrix> refToLocals;
+        FSkeletalMeshRenderData* renderData = comp->GetSkeletalMeshRenderData();
+        //FSkeletalMeshRenderData* renderData = comp->SkeletalMesh->GetResourceForRendering();
+
+        if (renderData != NULL && renderData->LODRenderData.Num() > 0) {
+            FTransform charactorToWorldTransform = comp->GetComponentTransform();
+            FVector worldRef = charactorToWorldTransform.GetLocation();
+
+            FSkeletalMeshLODRenderData& lodData = renderData->LODRenderData[lodIndex];
+            //FSkinWeightVertexBuffer* skinWeightBuffer = comp->GetSkinWeightBuffer(lodIndex);
+            FSkinWeightVertexBuffer& skinWeightBuffer = lodData.SkinWeightVertexBuffer;
+            //comp->CacheRefToLocalMatrices(refToLocals);
+            comp->GetCurrentRefToLocalMatrices(refToLocals, lodIndex);
+            comp->ComputeSkinnedPositions(*comp, outPositions, refToLocals, lodData, skinWeightBuffer);
+
+            for (FVector outPos : outPositions) {
+                outPos = worldRef + charactorToWorldTransform.TransformVector(outPos);
+
+                mesh.vertices.push_back(outPos.X);
+                mesh.vertices.push_back(outPos.Y);
+                mesh.vertices.push_back(outPos.Z);
+            }
+            if (comp->GetOwner() && comp->GetOwner()->GetOwner()) {
+                mesh.ownerHasOwner = true;
+            } else {
+                mesh.ownerHasOwner = false;
+            }
+
+            meshes.push_back(mesh);
+        } 
+
+    }
+
+    return meshes;
 }
 
 std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::GetStaticMeshComponents()

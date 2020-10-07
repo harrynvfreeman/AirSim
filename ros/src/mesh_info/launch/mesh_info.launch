@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg="mesh_info" type="mesh_info_node" name="mesh_info_node" output="screen">
+  </node>
+
+  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0.0 0.0 300.0 0.0 0.0 0.0 vertices map 100" />
+  
+  
+</launch>

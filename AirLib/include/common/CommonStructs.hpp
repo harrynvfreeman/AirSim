@@ -311,6 +311,7 @@ struct MeshPositionVertexBuffersResponse {
     std::vector<float> vertices;
     std::vector<uint32_t> indices;
     std::string name;
+    bool ownerHasOwner;
 };
 
 }} //namespace

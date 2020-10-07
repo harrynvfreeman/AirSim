@@ -94,6 +94,7 @@ public:
     vector<uint8_t> simGetImage(const std::string& camera_name, ImageCaptureBase::ImageType type, const std::string& vehicle_name = "");
 
     vector<MeshPositionVertexBuffersResponse> simGetMeshPositionVertexBuffers();
+    vector<MeshPositionVertexBuffersResponse> simGetSkeletalMeshPositionVertexBuffers();
 
     CollisionInfo simGetCollisionInfo(const std::string& vehicle_name = "") const;
 

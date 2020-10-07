@@ -141,6 +141,11 @@ RpcLibServerBase::RpcLibServerBase(ApiProvider* api_provider, const std::string&
         return RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse::from(response);
     });
 
+    pimpl_->server.bind("simGetSkeletalMeshPositionVertexBuffers", [&]() ->vector<RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse> {
+        const auto& response = getWorldSimApi()->getSkeletalMeshPositionVertexBuffers();
+        return RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse::from(response);
+    });
+
     pimpl_->server.
         bind("simSetVehiclePose", [&](const RpcLibAdapatorsBase::Pose &pose, bool ignore_collision, const std::string& vehicle_name) -> void {
         getVehicleSimApi(vehicle_name)->setPose(pose.to(), ignore_collision);

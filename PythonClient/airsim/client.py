@@ -268,6 +268,18 @@ class VehicleClient:
         responses_raw = self.client.call('simGetMeshPositionVertexBuffers')
         return [MeshPositionVertexBuffersResponse.from_msgpack(response_raw) for response_raw in responses_raw]
 
+    # gets the skeletal meshes in the unreal scene
+    def simGetSkeletalMeshPositionVertexBuffers(self):
+        """
+        Returns the skeletal meshes that make up the scene
+
+        Returns:
+            list[MeshPositionVertexBuffersResponse]:
+        """
+        responses_raw = self.client.call('simGetSkeletalMeshPositionVertexBuffers')
+        return [MeshPositionVertexBuffersResponse.from_msgpack(response_raw) for response_raw in responses_raw]
+
+
     def simGetCollisionInfo(self, vehicle_name = ''):
         """
         Args:

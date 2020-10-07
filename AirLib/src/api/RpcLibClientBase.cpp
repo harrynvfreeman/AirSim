@@ -248,6 +248,12 @@ vector<MeshPositionVertexBuffersResponse> RpcLibClientBase::simGetMeshPositionVe
     return RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse::to(response_adaptor);
 }
 
+vector<MeshPositionVertexBuffersResponse> RpcLibClientBase::simGetSkeletalMeshPositionVertexBuffers()
+{
+    const auto& response_adaptor = pimpl_->client.call("simGetSkeletalMeshPositionVertexBuffers").as<vector<RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse>>();
+    return RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse::to(response_adaptor);
+}
+
 void RpcLibClientBase::simPrintLogMessage(const std::string& message, std::string message_param, unsigned char  severity)
 {
     pimpl_->client.call("simPrintLogMessage", message, message_param, severity);

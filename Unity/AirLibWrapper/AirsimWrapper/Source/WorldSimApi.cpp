@@ -149,4 +149,12 @@ std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getMesh
     return result;
 }
 
+std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getSkeletalMeshPositionVertexBuffers() const
+{
+    std::vector<MeshPositionVertexBuffersResponse> result;
+    throw std::invalid_argument(common_utils::Utils::stringf(
+        "getSkeletalMeshPositionVertexBuffers is not supported on unity").c_str());
+    return result;
+}
+
 #pragma endregion

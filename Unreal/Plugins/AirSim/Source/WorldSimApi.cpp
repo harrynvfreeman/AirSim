@@ -238,3 +238,12 @@ std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getMesh
 	}, true);
 	return responses;
 }
+
+std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getSkeletalMeshPositionVertexBuffers() const
+{
+	std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> responses;
+	UAirBlueprintLib::RunCommandOnGameThread([&responses]() {
+		responses = UAirBlueprintLib::GetSkeletalMeshComponents();
+	}, true);
+	return responses;
+}
