@@ -355,7 +355,7 @@ std::vector<std::string> UAirBlueprintLib::ListMatchingActors(const UObject *con
     return results;
 }
 
-std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::GetSkeletalMeshComponents()
+std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::GetSkeletalMeshComponents(ASimModeBase* simmode)
 {
     std::vector<msr::airlib::MeshPositionVertexBuffersResponse> meshes;
     int num_meshes = 0;
@@ -389,12 +389,13 @@ std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::Ge
 
         TArray<FVector> outPositions;
         TArray<FMatrix> refToLocals;
+        NedTransform::Vector3r nedPositions;
         FSkeletalMeshRenderData* renderData = comp->GetSkeletalMeshRenderData();
         //FSkeletalMeshRenderData* renderData = comp->SkeletalMesh->GetResourceForRendering();
 
         if (renderData != NULL && renderData->LODRenderData.Num() > 0) {
             FTransform charactorToWorldTransform = comp->GetComponentTransform();
-            FVector worldRef = charactorToWorldTransform.GetLocation();
+            //FVector worldRef = charactorToWorldTransform.GetLocation();
 
             FSkeletalMeshLODRenderData& lodData = renderData->LODRenderData[lodIndex];
             //FSkinWeightVertexBuffer* skinWeightBuffer = comp->GetSkinWeightBuffer(lodIndex);
@@ -403,12 +404,20 @@ std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::Ge
             comp->GetCurrentRefToLocalMatrices(refToLocals, lodIndex);
             comp->ComputeSkinnedPositions(*comp, outPositions, refToLocals, lodData, skinWeightBuffer);
 
+            ////WARNING WARNING WARNING 
+            ////Verticis WILL NOT be in same fram as pos
             for (FVector outPos : outPositions) {
-                outPos = worldRef + charactorToWorldTransform.TransformVector(outPos);
+                //outPos = worldRef + charactorToWorldTransform.TransformVector(outPos);
+                outPos = pos + charactorToWorldTransform.TransformVector(outPos);
+                nedPositions = simmode->getGlobalNedTransform().toGlobalNed(outPos);
 
-                mesh.vertices.push_back(outPos.X);
-                mesh.vertices.push_back(outPos.Y);
-                mesh.vertices.push_back(outPos.Z);
+                //mesh.vertices.push_back(outPos.X);
+                //mesh.vertices.push_back(outPos.Y);
+                //mesh.vertices.push_back(outPos.Z);
+
+                mesh.vertices.push_back(nedPositions.x());
+                mesh.vertices.push_back(nedPositions.y());
+                mesh.vertices.push_back(nedPositions.z());
             }
             if (comp->GetOwner() && comp->GetOwner()->GetOwner()) {
                 mesh.ownerHasOwner = true;

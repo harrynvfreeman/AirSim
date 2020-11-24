@@ -18,6 +18,7 @@ STRICT_MODE_ON
 
 #include "vehicles/multirotor/api/MultirotorRpcLibClient.hpp"
 #include <iostream>
+#include<string>
 #include <chrono>
 //
 
@@ -34,6 +35,7 @@ class MeshInfoNode {
   ros::Publisher mesh_vertex_pub_;
   ros::Timer publishing_timer_;
   double publish_freq_;
+  std::string frame_id;
 };
 
 MeshInfoNode::MeshInfoNode() {
@@ -41,6 +43,7 @@ MeshInfoNode::MeshInfoNode() {
   ros::NodeHandle priv_nh("~");
 
   if (!priv_nh.getParam("publish_freq", publish_freq_)) { publish_freq_ = 50.0; }
+  priv_nh.param<std::string>("frame_id", frame_id, "/world");
 
   mesh_vertex_pub_ = nh.advertise<sensor_msgs::PointCloud2>("mesh_vertices", 1);
   publishing_timer_ = nh.createTimer(ros::Duration(1 / publish_freq_ /2.0), &MeshInfoNode::getMeshVertices, this);
@@ -60,7 +63,7 @@ void MeshInfoNode::getMeshVertices(const ros::TimerEvent &e) {
     if (mesh.name == "person_actor" && mesh.ownerHasOwner) {
         PointCloud2Ptr points_msg = boost::make_shared<PointCloud2>();
         int numVertices = mesh.vertices.size() / 3;
-        points_msg->header.frame_id = "vertices";
+        points_msg->header.frame_id = frame_id.c_str();
         points_msg->height = 1;
         points_msg->width = numVertices;
         points_msg->is_bigendian = false;

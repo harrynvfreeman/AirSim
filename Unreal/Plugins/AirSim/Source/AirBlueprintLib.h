@@ -16,6 +16,8 @@
 #include "Kismet/KismetStringLibrary.h"
 #include "Engine/World.h"
 
+#include "SimMode/SimModeBase.h"
+
 #include "Runtime/Landscape/Classes/LandscapeComponent.h"
 #include "common/AirSimSettings.hpp"
 #include <string>
@@ -184,7 +186,7 @@ public:
     static void CompressImageArray(int32 width, int32 height, const TArray<FColor> &src, TArray<uint8> &dest);
 
 	static std::vector<msr::airlib::MeshPositionVertexBuffersResponse> GetStaticMeshComponents();
-    static std::vector<msr::airlib::MeshPositionVertexBuffersResponse> GetSkeletalMeshComponents();
+    static std::vector<msr::airlib::MeshPositionVertexBuffersResponse> GetSkeletalMeshComponents(ASimModeBase* simmode);
 
 private:
     template<typename T>

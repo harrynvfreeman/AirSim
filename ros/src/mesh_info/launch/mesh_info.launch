@@ -1,9 +1,10 @@
 <launch>
 
   <node pkg="mesh_info" type="mesh_info_node" name="mesh_info_node" output="screen">
+    <param name="frame_id" type="string" value="world"/>
+    <param name="publish_freq" type="double" value="100.0"/>
   </node>
 
-  <node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0.0 0.0 300.0 0.0 0.0 0.0 vertices map 100" />
-  
+  <!--node pkg="tf" type="static_transform_publisher" name="link1_broadcaster" args="0.0 0.0 0.0 0.0 0.0 0.0 vertices map 100" /-->
   
 </launch>
