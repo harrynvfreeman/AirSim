@@ -141,8 +141,8 @@ RpcLibServerBase::RpcLibServerBase(ApiProvider* api_provider, const std::string&
         return RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse::from(response);
     });
 
-    pimpl_->server.bind("simGetSkeletalMeshPositionVertexBuffers", [&]() ->vector<RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse> {
-        const auto& response = getWorldSimApi()->getSkeletalMeshPositionVertexBuffers();
+    pimpl_->server.bind("simGetSkeletalMeshPositionVertexBuffers", [&](const std::string& object_name, bool forceOwnerHasOwner) ->vector<RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse> {
+        const auto& response = getWorldSimApi()->getSkeletalMeshPositionVertexBuffers(object_name, forceOwnerHasOwner);
         return RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse::from(response);
     });
 

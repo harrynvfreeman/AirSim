@@ -702,9 +702,10 @@ public:
         std::vector<float> vertices;
         std::vector<uint32_t> indices;
         std::string name;
-        bool ownerHasOwner;
+        std::vector<std::string> bone_names;
+        std::vector<float> bone_positions;
 
-        MSGPACK_DEFINE_MAP(position, orientation, vertices, indices, name, ownerHasOwner);
+        MSGPACK_DEFINE_MAP(position, orientation, vertices, indices, name, bone_names, bone_positions);
 
         MeshPositionVertexBuffersResponse()
         {}
@@ -723,7 +724,8 @@ public:
                 indices.push_back(0);
 
             name = s.name;
-            ownerHasOwner = s.ownerHasOwner;
+            bone_names = s.bone_names;
+            bone_positions = s.bone_positions;
         }
 
         msr::airlib::MeshPositionVertexBuffersResponse to() const
@@ -734,7 +736,8 @@ public:
             d.vertices = vertices;
             d.indices = indices;
             d.name = name;
-            d.ownerHasOwner = ownerHasOwner;
+            d.bone_names = bone_names;
+            d.bone_positions = bone_positions;
 
             return d;
         }

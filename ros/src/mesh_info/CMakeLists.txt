@@ -66,7 +66,7 @@ include_directories(
 catkin_package(
   #INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS cmake_modules sensor_msgs roslib
+  CATKIN_DEPENDS cmake_modules sensor_msgs geometry_msgs roslib
 )
 
 add_executable(mesh_info_node src/mesh_info_node.cc)

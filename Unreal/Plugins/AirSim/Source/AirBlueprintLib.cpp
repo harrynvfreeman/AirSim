@@ -355,14 +355,40 @@ std::vector<std::string> UAirBlueprintLib::ListMatchingActors(const UObject *con
     return results;
 }
 
-std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::GetSkeletalMeshComponents(ASimModeBase* simmode)
+static std::vector<FName> bones = {
+    //No nose
+    FName(TEXT("eye_l")),
+    FName(TEXT("eye_r")),
+    //No ear
+    FName(TEXT("upperarm_l")),
+    FName(TEXT("upperarm_r")),
+    FName(TEXT("lowerarm_l")),
+    FName(TEXT("lowerarm_r")),
+    FName(TEXT("hand_l")),
+    FName(TEXT("hand_r")),
+    FName(TEXT("upperleg_l")),
+    FName(TEXT("upperleg_r")),
+    FName(TEXT("lowerleg_l")),
+    FName(TEXT("lowerleg_r")),
+    FName(TEXT("foot_l")),
+    FName(TEXT("foot_r"))
+
+    //FName(TEXT("neck")),
+    //FName(TEXT("head")),
+    //FName(TEXT("head_end"))
+};
+std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::GetSkeletalMeshComponents(ASimModeBase* simmode, 
+                                                                                const std::string& object_name, bool forceOwnerHasOwner)
 {
     std::vector<msr::airlib::MeshPositionVertexBuffersResponse> meshes;
-    int num_meshes = 0;
 
     for (TObjectIterator<USkeletalMeshComponent> comp; comp; ++comp)
     {
         *comp;
+
+        //If forceOwnerHasOwner and comp owner does not have owner, continue
+        if (forceOwnerHasOwner && !(comp->GetOwner() && comp->GetOwner()->GetOwner()))
+            continue;
 
         //TODO Use GetMeshName (see GetStaticMeshComponents)
         std::string name;
@@ -371,6 +397,10 @@ std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::Ge
         } else {
             name = "";
         }
+
+        //If names do not match, continue
+        if ((object_name.compare(name) != 0))
+            continue;
 
         msr::airlib::MeshPositionVertexBuffersResponse mesh;
         mesh.name = name;
@@ -404,8 +434,6 @@ std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::Ge
             comp->GetCurrentRefToLocalMatrices(refToLocals, lodIndex);
             comp->ComputeSkinnedPositions(*comp, outPositions, refToLocals, lodData, skinWeightBuffer);
 
-            ////WARNING WARNING WARNING 
-            ////Verticis WILL NOT be in same fram as pos
             for (FVector outPos : outPositions) {
                 //outPos = worldRef + charactorToWorldTransform.TransformVector(outPos);
                 outPos = pos + charactorToWorldTransform.TransformVector(outPos);
@@ -419,12 +447,19 @@ std::vector<msr::airlib::MeshPositionVertexBuffersResponse> UAirBlueprintLib::Ge
                 mesh.vertices.push_back(nedPositions.y());
                 mesh.vertices.push_back(nedPositions.z());
             }
-            if (comp->GetOwner() && comp->GetOwner()->GetOwner()) {
-                mesh.ownerHasOwner = true;
-            } else {
-                mesh.ownerHasOwner = false;
+            //for (FName bone_name : comp->GetAllSocketNames()) {
+            //    FString bone_name_string = bone_name.ToString();
+            //    mesh.bone_names.push_back(TCHAR_TO_UTF8(*bone_name_string));
+            //}
+                
+            for (FName bone_name : bones) {
+                FVector bone_positions = comp->GetSocketLocation(bone_name);
+                nedPositions = simmode->getGlobalNedTransform().toGlobalNed(bone_positions);
+                mesh.bone_positions.push_back(nedPositions.x());
+                mesh.bone_positions.push_back(nedPositions.y());
+                mesh.bone_positions.push_back(nedPositions.z());
             }
-
+                
             meshes.push_back(mesh);
         } 
 

@@ -149,7 +149,7 @@ std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getMesh
     return result;
 }
 
-std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getSkeletalMeshPositionVertexBuffers() const
+std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getSkeletalMeshPositionVertexBuffers(const std::string& object_name, bool forceOwnerHasOwner) const
 {
     std::vector<MeshPositionVertexBuffersResponse> result;
     throw std::invalid_argument(common_utils::Utils::stringf(

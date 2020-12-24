@@ -248,9 +248,9 @@ vector<MeshPositionVertexBuffersResponse> RpcLibClientBase::simGetMeshPositionVe
     return RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse::to(response_adaptor);
 }
 
-vector<MeshPositionVertexBuffersResponse> RpcLibClientBase::simGetSkeletalMeshPositionVertexBuffers()
+vector<MeshPositionVertexBuffersResponse> RpcLibClientBase::simGetSkeletalMeshPositionVertexBuffers(const std::string& object_name, bool forceOwnerHasOwner)
 {
-    const auto& response_adaptor = pimpl_->client.call("simGetSkeletalMeshPositionVertexBuffers").as<vector<RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse>>();
+    const auto& response_adaptor = pimpl_->client.call("simGetSkeletalMeshPositionVertexBuffers", object_name, forceOwnerHasOwner).as<vector<RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse>>();
     return RpcLibAdapatorsBase::MeshPositionVertexBuffersResponse::to(response_adaptor);
 }
 

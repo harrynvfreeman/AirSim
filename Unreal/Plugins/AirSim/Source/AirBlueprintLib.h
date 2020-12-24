@@ -186,7 +186,7 @@ public:
     static void CompressImageArray(int32 width, int32 height, const TArray<FColor> &src, TArray<uint8> &dest);
 
 	static std::vector<msr::airlib::MeshPositionVertexBuffersResponse> GetStaticMeshComponents();
-    static std::vector<msr::airlib::MeshPositionVertexBuffersResponse> GetSkeletalMeshComponents(ASimModeBase* simmode);
+    static std::vector<msr::airlib::MeshPositionVertexBuffersResponse> GetSkeletalMeshComponents(ASimModeBase* simmode, const std::string& object_name, bool forceOwnerHasOwner);
 
 private:
     template<typename T>

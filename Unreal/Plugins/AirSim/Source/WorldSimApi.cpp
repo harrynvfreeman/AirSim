@@ -239,12 +239,12 @@ std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getMesh
 	return responses;
 }
 
-std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getSkeletalMeshPositionVertexBuffers() const
+std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> WorldSimApi::getSkeletalMeshPositionVertexBuffers(const std::string& object_name, bool forceOwnerHasOwner) const
 {
     ASimModeBase* simmode = simmode_;
 	std::vector<WorldSimApi::MeshPositionVertexBuffersResponse> responses;
-	UAirBlueprintLib::RunCommandOnGameThread([&responses, &simmode]() {
-		responses = UAirBlueprintLib::GetSkeletalMeshComponents(simmode);
+	UAirBlueprintLib::RunCommandOnGameThread([&responses, &simmode, &object_name, &forceOwnerHasOwner]() {
+		responses = UAirBlueprintLib::GetSkeletalMeshComponents(simmode, object_name, forceOwnerHasOwner);
 	}, true);
 	return responses;
 }
