@@ -72,12 +72,12 @@ MeshInfoNode::MeshInfoNode() {
   ros::NodeHandle nh;
   ros::NodeHandle priv_nh("~");
 
-  if (!priv_nh.getParam("publish_freq", publish_freq_)) { publish_freq_ = 50.0; }
+  if (!priv_nh.getParam("publish_freq", publish_freq_)) { publish_freq_ = 10.0; }
   priv_nh.param<std::string>("frame_id", frame_id, "/world");
 
   mesh_vertex_pub_ = nh.advertise<sensor_msgs::PointCloud2>("mesh_vertices", 1);
   bone_pub_ = nh.advertise<visualization_msgs::MarkerArray>("bone_markers", 1);
-  publishing_timer_ = nh.createTimer(ros::Duration(1 / publish_freq_ /2.0), &MeshInfoNode::getMeshVertices, this);
+  publishing_timer_ = nh.createTimer(ros::Duration(1 / publish_freq_ ), &MeshInfoNode::getMeshVertices, this);
 }
 
 MeshInfoNode::~MeshInfoNode() {
